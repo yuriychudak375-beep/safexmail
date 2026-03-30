@@ -3,27 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeXMail | Digital Defense Terminal</title>
+    <title>SafeXMail | Термінал Кіберзахисту</title>
     <style>
         :root { --primary: #007bff; --bg: #000000; --card: #080808; --text: #ffffff; }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', 'Segoe UI', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
+        body { background-color: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
         
-        /* Статичний цифровий фон */
+        /* Фон-сітка */
         .bg-pattern {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: 
-                linear-gradient(rgba(20, 20, 20, 0.5) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(20, 20, 20, 0.5) 1px, transparent 1px);
-            background-size: 60px 60px;
-            z-index: -1;
+                linear-gradient(rgba(25, 25, 25, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(25, 25, 25, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px; z-index: -1;
         }
 
         /* Навігація */
-        nav { background: rgba(0, 0, 0, 0.95); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 25px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #111; backdrop-filter: blur(10px); }
-        nav a { color: #444; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
-        nav a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        nav { background: rgba(0, 0, 0, 0.9); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 25px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #111; backdrop-filter: blur(10px); }
+        nav a { color: #555; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
 
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         .section { min-height: 100vh; padding: 120px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
@@ -33,28 +32,25 @@
         .hero-sub { color: #222; font-size: 11px; letter-spacing: 8px; text-transform: uppercase; margin: 15px 0 60px 0; }
 
         .card { background: var(--card); border: 1px solid #151515; padding: 50px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 20px 80px rgba(0,0,0,1); }
-        input { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 15px; outline: none; transition: 0.3s; }
+        input { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 15px; outline: none; }
         input:focus { border-color: var(--primary); }
-        input.invalid { border-color: #ff4444 !important; }
 
-        .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 2px; transition: 0.3s; }
-        .btn-main:hover { background: #0056b3; box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); }
+        .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 2px; }
 
         .alert-box { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.03); font-size: 14px; text-align: left; }
 
-        /* Гріди */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; margin-top: 50px; }
-        .grid-item { background: #040404; border: 1px solid #111; padding: 40px; border-radius: 4px; }
-        .grid-item h3 { color: var(--primary); font-size: 13px; margin-bottom: 15px; text-transform: uppercase; }
-        .big-num { font-size: 58px; font-weight: 900; margin-bottom: 10px; color: #fff; }
+        /* Статистика */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; width: 100%; margin-top: 50px; }
+        .grid-item { background: #050505; border: 1px solid #111; padding: 40px; border-radius: 4px; }
+        .big-num { font-size: 64px; font-weight: 900; color: #fff; margin-bottom: 10px; display: block; }
+        .grid-item p { color: #444; text-transform: uppercase; font-size: 12px; letter-spacing: 1px; }
 
-        /* Форма зв'язку */
-        #contactBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; z-index: 2000; font-size: 24px; box-shadow: 0 0 15px rgba(0,123,255,0.4); transition: 0.3s; }
-        #contactBtn:hover { transform: scale(1.1); }
+        /* Плаваюча форма */
+        #contactBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; z-index: 2000; font-size: 24px; box-shadow: 0 0 15px rgba(0,123,255,0.4); }
         #contactForm { display: none; position: fixed; bottom: 100px; right: 30px; width: 320px; background: #0a0a0a; border: 1px solid #222; padding: 25px; border-radius: 8px; z-index: 2000; box-shadow: 0 10px 50px rgba(0,0,0,1); }
         
         footer { background: #000; padding: 100px 0; border-top: 1px solid #111; }
-        .footer-content { color: #1a1a1a; font-size: 10px; line-height: 2; text-align: left; }
+        .footer-content { color: #1a1a1a; font-size: 11px; text-align: left; }
         .links a { color: var(--primary); text-decoration: none; font-weight: bold; margin-right: 20px; font-size: 14px; }
     </style>
 </head>
@@ -72,51 +68,51 @@
 <button id="contactBtn" onclick="toggleForm()">💬</button>
 
 <div id="contactForm">
-    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-transform: uppercase;">Запит на шифрування</h4>
+    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-transform: uppercase;">Зворотній зв'язок</h4>
     <input type="text" id="fName" placeholder="Ваше ім'я">
-    <input type="text" id="fPhone" placeholder="Номер телефону (без +)">
-    <input type="text" id="fEmail" placeholder="Gmail пошта" oninput="validateEmail(this)">
-    <button class="btn-main" style="padding: 12px; font-size: 12px;" onclick="submitForm()">Відправити</button>
+    <input type="text" id="fPhone" placeholder="Телефон">
+    <input type="text" id="fEmail" placeholder="Gmail пошта">
+    <button class="btn-main" style="padding: 12px; font-size: 12px;" onclick="submitForm()">Надіслати</button>
 </div>
 
 <div class="container">
     <section id="home" class="section">
         <div class="brand">SafeX<span>Mail</span></div>
-        <div class="hero-sub">Shielding Digital Assets</div>
+        <div class="hero-sub">Захист цифрових активів</div>
         <div class="card">
-            <h2 style="font-weight: 200; margin-bottom: 25px;">Terminal Check</h2>
-            <input type="email" id="mainEmail" placeholder="user@gmail.com">
-            <button class="btn-main" onclick="runCheck()">Execute Scan</button>
+            <h2 style="font-weight: 200; margin-bottom: 25px;">Сканер Термінала</h2>
+            <input type="email" id="mainEmail" placeholder="vash_mail@gmail.com">
+            <button class="btn-main" onclick="runCheck()">Запустити діагностику</button>
             <div id="alertBox" class="alert-box">
-                <b>[SYSTEM ALERT]</b><br>
-                Пошту знайдено у списку критичних вразливостей #XJ-2026. Необхідна негайна ручна активація SafeX-тунелю.
+                <b>[УВАГА: СИСТЕМНА ПОМИЛКА]</b><br>
+                Виявлено критичний витік даних для цієї пошти. Потрібна активація SafeX-тунелю.
             </div>
         </div>
     </section>
 
     <section id="services" class="section">
-        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Capabilities</h2>
+        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Наші можливості</h2>
         <div class="grid">
-            <div class="grid-item"><h3>Session Isolation</h3><p>Повна ізоляція входу від зовнішніх атак.</p></div>
-            <div class="grid-item"><h3>Dump Purge</h3><p>Видалення вашої цифрової особистості з відкритих баз.</p></div>
-            <div class="grid-item"><h3>Active Monitoring</h3><p>Цілодобовий контроль за вашим акаунтом.</p></div>
+            <div class="grid-item"><h3>Ізоляція сесій</h3><p>Блокування входу з чужих IP.</p></div>
+            <div class="grid-item"><h3>Очищення дампів</h3><p>Видалення даних з хакерських баз.</p></div>
+            <div class="grid-item"><h3>Моніторинг 24/7</h3><p>Цілодобовий контроль доступу.</p></div>
         </div>
     </section>
 
     <section id="stats" class="section">
-        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Системна статистика</h2>
+        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Глобальна статистика</h2>
         <div class="grid">
             <div class="grid-item">
-                <div class="big-num counter" data-target="1542">0</div>
-                <p>Захищених користувачів</p>
+                <span class="big-num counter" data-target="1542">0</span>
+                <p>Врятованих акаунтів</p>
             </div>
             <div class="grid-item">
-                <div class="big-num counter" data-target="48">0</div>
-                <p>ГБ оброблених даних</p>
+                <span class="big-num counter" data-target="48">0</span>
+                <p>ГБ оброблених логів</p>
             </div>
             <div class="grid-item">
-                <div class="big-num counter" data-target="100">0</div>
-                <p>% Ефективності</p>
+                <span class="big-num counter" data-target="100">0</span>
+                <p>% Успішних активацій</p>
             </div>
         </div>
     </section>
@@ -125,7 +121,7 @@
 <footer id="contacts">
     <div class="container">
         <div class="footer-content">
-            <p>SafeXMail Group © 2026. Офіційний сервіс реагування. Ми не збираємо ваші паролі.</p>
+            <p>SafeXMail Group © 2026. Офіційний сервіс реагування. Ми не зберігаємо ваші паролі.</p>
             <div class="links" style="margin-top: 20px;">
                 <a href="https://t.me/safexmail_support" target="_blank">Telegram: @safexmail_support</a>
                 <a href="mailto:safexmail.help@gmail.com">Email: safexmail.help@gmail.com</a>
@@ -137,12 +133,11 @@
 <script>
     function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
     function toggleForm() { let f = document.getElementById('contactForm'); f.style.display = (f.style.display === 'block') ? 'none' : 'block'; }
-    function validateEmail(el) { if(el.value.includes('@gmail.com')) { el.classList.remove('invalid'); } else { el.classList.add('invalid'); } }
 
     function submitForm() {
-        let email = document.getElementById('fEmail');
-        if(!email.value.includes('@gmail.com')) { alert('Введіть вірний Gmail'); return; }
-        alert('Запит прийнято. Перенаправляємо в Telegram...');
+        let email = document.getElementById('fEmail').value;
+        if(!email.includes('@gmail.com')) { alert('Вкажіть пошту Gmail'); return; }
+        alert('Дані прийнято. Перенаправляємо в Telegram для завершення захисту.');
         window.location.href = "https://t.me/safexmail_support";
     }
 
@@ -152,37 +147,32 @@
         } else { alert('Введіть пошту'); }
     }
 
-    // ЛОГІКА ЛІЧИЛЬНИКА (Анімовані цифри)
+    // СКРИПТ ЛІЧИЛЬНИКА
     const counters = document.querySelectorAll('.counter');
-    const speed = 200; 
+    
+    function startCounter(el) {
+        const target = +el.getAttribute('data-target');
+        const count = +el.innerText;
+        const increment = target / 50; // Швидкість (чим менше число, тим повільніше)
 
-    const startCounters = () => {
-        counters.forEach(counter => {
-            const updateCount = () => {
-                const target = +counter.getAttribute('data-target');
-                const count = +counter.innerText;
-                const inc = target / speed;
+        if (count < target) {
+            el.innerText = Math.ceil(count + increment);
+            setTimeout(() => startCounter(el), 30);
+        } else {
+            el.innerText = target;
+        }
+    }
 
-                if (count < target) {
-                    counter.innerText = Math.ceil(count + inc);
-                    setTimeout(updateCount, 15);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-            updateCount();
-        });
-    };
-
-    // Активація лічильника при появі на екрані
+    // Перевірка скролу (Intersection Observer)
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if(entry.isIntersecting) {
-                startCounters();
+                // Запускаємо лічильник для кожного елемента окремо
+                counters.forEach(c => startCounter(c));
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.5 });
+    }, { threshold: 0.3 });
 
     observer.observe(document.getElementById('stats'));
 </script>
