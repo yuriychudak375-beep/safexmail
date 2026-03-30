@@ -3,132 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeXMail | Global Cybersecurity Terminal</title>
+    <title>SafeXMail | Digital Defense Terminal</title>
     <style>
         :root { --primary: #007bff; --bg: #000000; --card: #080808; --text: #ffffff; }
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: var(--bg); color: var(--text); font-family: 'Inter', 'Segoe UI', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
         
-        /* Ефект Матриці (Чіткий) */
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.35; }
+        /* Статичний цифровий фон (Сітка та фігури) */
+        .bg-pattern {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                linear-gradient(rgba(10, 10, 10, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 10, 0.5) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+        }
+        .bg-decor {
+            position: fixed; top: 10%; right: 5%; width: 300px; height: 300px;
+            border: 1px solid rgba(0, 123, 255, 0.05); border-radius: 50%; z-index: -1;
+        }
+        .bg-decor-2 {
+            position: fixed; bottom: 5%; left: 2%; width: 150px; height: 150px;
+            border: 1px dashed rgba(0, 123, 255, 0.1); z-index: -1; transform: rotate(45deg);
+        }
 
         /* Навігація */
-        nav { background: rgba(0, 0, 0, 0.95); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 25px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #1a1a1a; backdrop-filter: blur(10px); }
-        nav a { color: #666; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        nav { background: rgba(0, 0, 0, 0.95); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 25px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #111; backdrop-filter: blur(10px); }
+        nav a { color: #444; text-decoration: none; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
         nav a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
 
-        /* Секції */
+        /* Контент */
         .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
         .section { min-height: 100vh; padding: 120px 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
         
-        .brand { font-size: 56px; font-weight: 900; letter-spacing: -2px; margin-bottom: 5px; }
+        .brand { font-size: 56px; font-weight: 900; letter-spacing: -2px; }
         .brand span { color: var(--primary); }
-        .hero-sub { color: #333; font-size: 12px; letter-spacing: 8px; text-transform: uppercase; margin-bottom: 60px; }
+        .hero-sub { color: #222; font-size: 11px; letter-spacing: 8px; text-transform: uppercase; margin: 15px 0 60px 0; }
 
-        /* Картка сканера */
-        .card { background: var(--card); border: 1px solid #1a1a1a; padding: 50px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 0 60px rgba(0,0,0,1); position: relative; }
-        input { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 15px; outline: none; font-size: 16px; transition: 0.3s; }
+        /* Картки */
+        .card { background: var(--card); border: 1px solid #151515; padding: 50px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 20px 80px rgba(0,0,0,1); }
+        input { width: 100%; padding: 16px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 15px; outline: none; transition: 0.3s; }
         input:focus { border-color: var(--primary); }
-        input.invalid { border-color: #ff4444 !important; box-shadow: 0 0 10px rgba(255, 68, 68, 0.2); }
+        input.invalid { border-color: #ff4444 !important; }
 
-        .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: 0.3s; }
-        .btn-main:hover { background: #0056b3; transform: translateY(-2px); }
+        .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 2px; transition: 0.3s; }
+        .btn-main:hover { background: #0056b3; box-shadow: 0 0 20px rgba(0, 123, 255, 0.3); }
 
-        .alert-box { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.05); font-weight: bold; font-size: 14px; line-height: 1.5; }
+        .alert-box { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.03); font-size: 14px; text-align: left; }
 
-        /* Послуги та Статистика */
+        /* Гріди */
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; width: 100%; margin-top: 50px; }
-        .grid-item { background: #050505; border: 1px solid #111; padding: 40px; border-radius: 4px; transition: 0.3s; }
-        .grid-item:hover { border-color: #222; }
-        .grid-item h3 { color: var(--primary); font-size: 13px; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
-        .big-num { font-size: 58px; font-weight: 900; margin-bottom: 10px; color: #fff; }
+        .grid-item { background: #040404; border: 1px solid #111; padding: 40px; border-radius: 4px; }
+        .grid-item h3 { color: var(--primary); font-size: 13px; margin-bottom: 15px; text-transform: uppercase; }
+        .big-num { font-size: 58px; font-weight: 900; margin-bottom: 10px; }
 
-        /* Плаваюча кнопка та форма */
-        #contactBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; box-shadow: 0 0 20px rgba(0,123,255,0.5); z-index: 2000; font-size: 24px; transition: 0.3s; }
-        #contactBtn:hover { transform: scale(1.1); }
-
-        #contactForm { display: none; position: fixed; bottom: 100px; right: 30px; width: 320px; background: #0a0a0a; border: 1px solid #222; padding: 25px; border-radius: 8px; z-index: 2000; box-shadow: 0 10px 50px rgba(0,0,0,0.9); }
-        #contactForm h4 { margin-bottom: 18px; font-size: 14px; color: var(--primary); text-transform: uppercase; letter-spacing: 1px; }
-
+        /* Плаваюча форма */
+        #contactBtn { position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; z-index: 2000; font-size: 24px; box-shadow: 0 0 15px rgba(0,123,255,0.4); }
+        #contactForm { display: none; position: fixed; bottom: 100px; right: 30px; width: 320px; background: #0a0a0a; border: 1px solid #222; padding: 25px; border-radius: 8px; z-index: 2000; box-shadow: 0 10px 50px rgba(0,0,0,1); }
+        
         /* Футер */
         footer { background: #000; padding: 100px 0; border-top: 1px solid #111; }
-        .footer-content { color: #222; font-size: 11px; line-height: 2; text-align: left; }
-        .contacts-links { margin-top: 30px; font-size: 13px; color: #555; }
-        .contacts-links a { color: var(--primary); text-decoration: none; font-weight: bold; }
-        .contacts-links a:hover { text-decoration: underline; }
+        .footer-content { color: #1a1a1a; font-size: 10px; line-height: 2; text-align: left; }
+        .links a { color: var(--primary); text-decoration: none; font-weight: bold; margin-right: 20px; }
     </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+<div class="bg-pattern"></div>
+<div class="bg-decor"></div>
+<div class="bg-decor-2"></div>
 
 <nav>
-    <a onclick="scrollToSection('home')">Головна</a>
-    <a onclick="scrollToSection('services')">Послуги</a>
-    <a onclick="scrollToSection('stats')">Статистика</a>
-    <a onclick="scrollToSection('contacts')">Контакти</a>
+    <a onclick="scrollToSection('home')">Home</a>
+    <a onclick="scrollToSection('services')">Services</a>
+    <a onclick="scrollToSection('stats')">Database</a>
+    <a onclick="scrollToSection('contacts')">Contact</a>
 </nav>
 
 <button id="contactBtn" onclick="toggleForm()">💬</button>
 
 <div id="contactForm">
-    <h4>Активація Захисту</h4>
+    <h4 style="color: var(--primary); margin-bottom: 15px; font-size: 14px; text-transform: uppercase;">Запит на шифрування</h4>
     <input type="text" id="fName" placeholder="Ваше ім'я">
     <input type="text" id="fPhone" placeholder="Номер телефону (без +)">
-    <input type="text" id="fEmail" placeholder="Електронна пошта (Gmail)" oninput="validateEmail(this)">
-    <button class="btn-main" style="padding: 12px; font-size: 12px;" onclick="submitForm()">Відправити запит</button>
+    <input type="text" id="fEmail" placeholder="Gmail пошта" oninput="validateEmail(this)">
+    <button class="btn-main" style="padding: 12px; font-size: 12px;" onclick="submitForm()">Відправити</button>
 </div>
 
 <div class="container">
     <section id="home" class="section">
         <div class="brand">SafeX<span>Mail</span></div>
-        <div class="hero-sub">Global Cyber Defense Unit</div>
+        <div class="hero-sub">Shielding Digital Assets</div>
         <div class="card">
-            <h2 style="font-weight: 200; margin-bottom: 25px;">Terminal Scanner v4.2</h2>
-            <p style="color: #444; margin-bottom: 35px; font-size: 14px;">Перевірка облікового запису в базі витоків #XJ-2026</p>
-            <input type="email" id="mainEmail" placeholder="Введіть e-mail для діагностики...">
-            <button class="btn-main" onclick="runCheck()">Execute Diagnosis</button>
+            <h2 style="font-weight: 200; margin-bottom: 25px;">Terminal Check</h2>
+            <input type="email" id="mainEmail" placeholder="user@gmail.com">
+            <button class="btn-main" onclick="runCheck()">Execute Scan</button>
             <div id="alertBox" class="alert-box">
-                [!] CRITICAL VULNERABILITY DETECTED<br>
-                <span style="font-size: 12px; font-weight: normal; color: #888;">Дані знайдено у відкритому дампі. Необхідна термінова активація SafeX-протоколу для вашого Gmail.</span>
+                <b>[SYSTEM ALERT]</b><br>
+                Пошту знайдено у списку критичних вразливостей #XJ-2026. Необхідна негайна ручна активація SafeX-тунелю.
             </div>
         </div>
     </section>
 
     <section id="services" class="section">
-        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Сервіси Безпеки</h2>
+        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Capabilities</h2>
         <div class="grid">
-            <div class="grid-item">
-                <h3>Тунельне шифрування</h3>
-                <p>Захист вхідного трафіку через виділені проксі-сервери для запобігання витоку токенів сесії.</p>
-            </div>
-            <div class="grid-item">
-                <h3>Очищення баз</h3>
-                <p>Пряма деактивація ваших персональних даних із виявлених хакерських репозиторіїв.</p>
-            </div>
-            <div class="grid-item">
-                <h3>Захист 24/7</h3>
-                <p>Миттєве блокування несанкціонованих спроб входу з підозрілих IP-адрес.</p>
-            </div>
+            <div class="grid-item"><h3>Session Isolation</h3><p>Повна ізоляція входу від зовнішніх атак.</p></div>
+            <div class="grid-item"><h3>Dump Purge</h3><p>Видалення вашої цифрової особистості з відкритих баз.</p></div>
+            <div class="grid-item"><h3>Active Monitoring</h3><p>Цілодобовий контроль за вашим акаунтом.</p></div>
         </div>
     </section>
 
     <section id="stats" class="section">
-        <h2 style="font-size: 32px; font-weight: 200; margin-bottom: 60px;">Global Intelligence</h2>
         <div class="grid">
-            <div class="card" style="padding: 40px;">
-                <div class="big-num">1,542+</div>
-                <p style="color: #666;">Захищених акаунтів</p>
-            </div>
-            <div class="card" style="padding: 40px;">
-                <div class="big-num">48 ГБ</div>
-                <p style="color: #666;">Оброблено витоків</p>
-            </div>
-            <div class="card" style="padding: 40px;">
-                <div class="big-num">100%</div>
-                <p style="color: #666;">Ефективність захисту</p>
-            </div>
+            <div class="grid-item"><div class="big-num">1,542+</div><p>Users Saved</p></div>
+            <div class="grid-item"><div class="big-num">48GB</div><p>Logs Tracked</p></div>
+            <div class="grid-item"><div class="big-num">0</div><p>Failures</p></div>
         </div>
     </section>
 </div>
@@ -136,90 +127,32 @@
 <footer id="contacts">
     <div class="container">
         <div class="footer-content">
-            <p>SafeXMail Group (Global division). Цей термінал є частиною міжнародної програми реагування на кіберзагрози 2026 року. Усі процедури виконуються згідно з регламентом безпеки даних. Ми не запитуємо ваші паролі у відкритому вигляді.</p>
-            <div class="contacts-links">
-                <b>SUPPORT TG:</b> <a href="https://t.me/safexmail_support" target="_blank">@safexmail_support</a><br>
-                <b>ADMIN EMAIL:</b> <a href="mailto:safexmail.help@gmail.com">safexmail.help@gmail.com</a><br>
-                <b>OFFICE:</b> UA Branch (Kyiv/Lviv)
+            <p>SafeXMail Group © 2026. Офіційний сервіс реагування. Ми не збираємо ваші паролі.</p>
+            <div class="links" style="margin-top: 20px; font-size: 14px;">
+                <a href="https://t.me/safexmail_support" target="_blank">Telegram: @safexmail_support</a>
+                <a href="mailto:safexmail.help@gmail.com">Email: safexmail.help@gmail.com</a>
             </div>
         </div>
     </div>
 </footer>
 
 <script>
-    // Навігація
-    function scrollToSection(id) {
-        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Форма зв'язку
-    function toggleForm() {
-        let f = document.getElementById('contactForm');
-        f.style.display = (f.style.display === 'block') ? 'none' : 'block';
-    }
-
-    function validateEmail(el) {
-        if(el.value.includes('@gmail.com')) {
-            el.classList.remove('invalid');
-        } else {
-            el.classList.add('invalid');
-        }
-    }
+    function scrollToSection(id) { document.getElementById(id).scrollIntoView({ behavior: 'smooth' }); }
+    function toggleForm() { let f = document.getElementById('contactForm'); f.style.display = (f.style.display === 'block') ? 'none' : 'block'; }
+    function validateEmail(el) { if(el.value.includes('@gmail.com')) { el.classList.remove('invalid'); } else { el.classList.add('invalid'); } }
 
     function submitForm() {
         let email = document.getElementById('fEmail');
-        let name = document.getElementById('fName').value;
-        let phone = document.getElementById('fPhone').value;
-
-        if(!email.value.includes('@gmail.com')) {
-            alert('Помилка: Необхідна пошта формату @gmail.com для синхронізації з базою.');
-            return;
-        }
-        if(name === "" || phone === "") {
-            alert('Будь ласка, заповніть всі поля для верифікації.');
-            return;
-        }
-
-        alert('Запит прийнято. Наш спеціаліст зв’яжеться з вами в Telegram для активації захисту.');
+        if(!email.value.includes('@gmail.com')) { alert('Введіть вірний Gmail'); return; }
+        alert('Запит прийнято. Перенаправляємо в Telegram...');
         window.location.href = "https://t.me/safexmail_support";
     }
 
-    // Головний скан
     function runCheck() {
-        let mail = document.getElementById('mainEmail').value;
-        if(mail.includes('@')) {
+        if(document.getElementById('mainEmail').value.includes('@')) {
             document.getElementById('alertBox').style.display = 'block';
-            window.scrollBy(0, 200);
-        } else {
-            alert('Помилка: Введіть коректну пошту');
-        }
+        } else { alert('Введіть пошту'); }
     }
-
-    // Матриця
-    const canvas = document.getElementById('matrix');
-    const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const chars = "01010101ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const fontSize = 16;
-    const columns = canvas.width / fontSize;
-    const drops = [];
-    for (let x = 0; x < columns; x++) drops[x] = 1;
-
-    function draw() {
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#008F11';
-        ctx.font = fontSize + 'px monospace';
-        for (let i = 0; i < drops.length; i++) {
-            const text = chars.charAt(Math.floor(Math.random() * chars.length));
-            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
-            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
-            drops[i]++;
-        }
-    }
-    setInterval(draw, 45);
 </script>
 
 </body>
