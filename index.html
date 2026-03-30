@@ -3,44 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeXMail | Global Security Terminal</title>
+    <title>SafeXMail | Global Cybersecurity Unit</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
         
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.2; }
+        /* Чіткіша Матриця */
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
 
-        nav { background: rgba(0, 0, 0, 0.9); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 20px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #111; backdrop-filter: blur(5px); }
-        nav a { color: #555; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
-        nav a:hover { color: #007bff; text-shadow: 0 0 8px #007bff; }
+        nav { background: rgba(0, 0, 0, 0.9); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 25px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #1a1a1a; backdrop-filter: blur(10px); }
+        nav a { color: #888; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        nav a:hover { color: #007bff; text-shadow: 0 0 10px #007bff; }
 
-        .section { min-height: 100vh; padding: 120px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid #050505; }
-        
-        .brand { font-size: 48px; font-weight: 900; color: #ffffff; margin-bottom: 5px; letter-spacing: -2px; }
+        .section { min-height: 100vh; padding: 120px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+        .brand { font-size: 52px; font-weight: 900; color: #ffffff; letter-spacing: -2px; }
         .brand span { color: #007bff; }
-        .hero-sub { color: #333; font-size: 12px; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 40px; }
+        .hero-sub { color: #444; font-size: 12px; letter-spacing: 7px; text-transform: uppercase; margin-bottom: 50px; }
 
-        .card { background: #050505; border: 1px solid #1a1a1a; padding: 40px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 0 40px rgba(0,0,0,1); }
+        .card { background: #080808; border: 1px solid #1a1a1a; padding: 50px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 0 50px rgba(0,0,0,1); }
         
-        input { width: 100%; padding: 15px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 20px; outline: none; font-size: 16px; }
-        input:focus { border-color: #007bff; }
+        input { width: 100%; padding: 16px; background: #000; border: 1px solid #333; color: #fff; border-radius: 4px; margin-bottom: 15px; outline: none; font-size: 16px; transition: 0.3s; }
+        input.invalid { border-color: #ff4444 !important; box-shadow: 0 0 10px rgba(255, 68, 68, 0.2); }
 
-        button { width: 100%; background: #007bff; color: #fff; border: none; padding: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: 0.3s; }
-        button:hover { background: #0056b3; transform: translateY(-2px); }
+        .btn-main { width: 100%; background: #007bff; color: #fff; border: none; padding: 18px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: 0.3s; }
+        .btn-main:hover { background: #0056b3; box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
 
-        .alert { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.05); font-weight: bold; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
+        .alert { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.05); font-weight: bold; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 40px; }
-        .grid-item { background: #050505; border: 1px solid #111; padding: 30px; border-radius: 4px; }
+        /* Сітка */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; width: 100%; max-width: 1100px; margin-top: 50px; }
+        .grid-item { background: #050505; border: 1px solid #111; padding: 40px; border-radius: 4px; }
         .grid-item h3 { color: #007bff; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; }
-        .grid-item p { color: #666; font-size: 14px; line-height: 1.6; }
-        .big-num { font-size: 42px; font-weight: 900; margin-bottom: 10px; }
+        .big-num { font-size: 54px; font-weight: 900; margin-bottom: 10px; color: #fff; }
 
-        footer { background: #000; padding: 60px 20px; border-top: 1px solid #111; width: 100%; }
-        .footer-content { max-width: 1000px; margin: 0 auto; text-align: left; color: #222; font-size: 11px; }
-        .contacts { margin-top: 30px; color: #666; font-size: 13px; line-height: 1.8; }
-        .contacts b { color: #888; }
+        /* Плаваюча кнопка зв'язку */
+        #contactBtn { position: fixed; bottom: 30px; right: 30px; background: #007bff; color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; box-shadow: 0 0 20px rgba(0,123,255,0.5); z-index: 2000; font-size: 24px; transition: 0.3s; }
+        #contactBtn:hover { transform: scale(1.1); background: #0056b3; }
+
+        /* Модальне вікно форми */
+        #contactForm { display: none; position: fixed; bottom: 100px; right: 30px; width: 320px; background: #0a0a0a; border: 1px solid #222; padding: 25px; border-radius: 8px; z-index: 2000; box-shadow: 0 10px 40px rgba(0,0,0,0.8); }
+        #contactForm h4 { margin-bottom: 15px; font-size: 16px; color: #007bff; text-transform: uppercase; }
+
+        footer { background: #000; padding: 100px 20px; border-top: 1px solid #111; text-align: center; }
+        .footer-content { max-width: 800px; margin: 0 auto; color: #222; font-size: 11px; line-height: 1.8; }
+        .contacts-list { margin-top: 40px; color: #555; font-size: 13px; text-align: left; display: inline-block; }
     </style>
 </head>
 <body>
@@ -48,93 +54,130 @@
 <canvas id="matrix"></canvas>
 
 <nav>
-    <a href="#home">Home</a>
-    <a href="#services">Services</a>
-    <a href="#stats">Database</a>
-    <a href="#contacts">Contact</a>
+    <a href="#home">Головна</a>
+    <a href="#services">Послуги</a>
+    <a href="#stats">Статистика</a>
+    <a href="#contacts">Контакти</a>
 </nav>
+
+<button id="contactBtn" onclick="toggleForm()">💬</button>
+
+<div id="contactForm">
+    <h4>Запит на захист</h4>
+    <input type="text" id="fName" placeholder="Ваше ім'я">
+    <input type="text" id="fPhone" placeholder="Номер телефону (без +)">
+    <input type="text" id="fEmail" placeholder="Електронна пошта (Gmail)" oninput="validateEmail(this)">
+    <button class="btn-main" style="padding: 12px;" onclick="submitForm()">Відправити</button>
+</div>
 
 <section id="home" class="section">
     <div class="brand">SafeX<span>Mail</span></div>
-    <div class="hero-sub">Security Initiative</div>
+    <div class="hero-sub">Data Leakage Protection</div>
     <div class="card">
-        <h2 style="font-weight: 300; margin-bottom: 20px;">Scanner Terminal</h2>
-        <p style="color: #444; margin-bottom: 30px; font-size: 14px;">Перевірка статусу в базі витоків #XJ-2026 (48GB Data Dump)</p>
-        <input type="email" id="emailInp" placeholder="Введіть e-mail...">
-        <button onclick="runCheck()">Execute Scan</button>
+        <h2 style="font-weight: 300; margin-bottom: 25px; letter-spacing: 1px;">Security Terminal</h2>
+        <p style="color: #444; margin-bottom: 35px; font-size: 14px;">Діагностика загрози витоку #XJ-2026 (Global Dump)</p>
+        <input type="email" id="mainEmail" placeholder="Введіть e-mail для аналізу...">
+        <button class="btn-main" onclick="runCheck()">Запустити аналіз</button>
         <div id="alertBox" class="alert">
-            [CRITICAL ERROR] DATA BREACH DETECTED<br>
-            <span style="font-size: 12px; font-weight: normal; color: #888;">Вашу пошту знайдено у відкритих списках. Потрібна активація SafeX-протоколу.</span>
+            [КРИТИЧНА ВРАЗЛИВІСТЬ] ДАНІ ЗНАЙДЕНО<br>
+            <span style="font-size: 12px; font-weight: normal; color: #888;">Ваш обліковий запис у зоні ризику. Необхідна активація SafeX-тунелю.</span>
         </div>
     </div>
 </section>
 
-<section id="services" class="section" style="background: #020202;">
-    <h2 style="margin-bottom: 50px; font-size: 32px;">Core Services</h2>
+<section id="services" class="section" style="background: rgba(0,0,0,0.8);">
+    <h2 style="margin-bottom: 60px; font-size: 36px; font-weight: 200;">Наші можливості</h2>
     <div class="grid">
         <div class="grid-item">
-            <h3>Tunneling</h3>
-            <p>Пряме шифрування сесії входу для захисту від перехоплення токенів.</p>
+            <h3>Сесійне шифрування</h3>
+            <p>Створення виділеного зашифрованого каналу для вашої пошти під час пікових атак.</p>
         </div>
         <div class="grid-item">
-            <h3>Breach Cleanup</h3>
-            <p>Запити на видалення персональних даних із виявлених хакерських баз.</p>
+            <h3>Очищення дампів</h3>
+            <p>Механічне видалення рядків із вашими паролями з приватних хакерських баз даних.</p>
         </div>
         <div class="grid-item">
-            <h3>Anti-Brute Force</h3>
-            <p>Блокування спроб автоматичного підбору паролів до вашого акаунту.</p>
+            <h3>SafeX Protocol</h3>
+            <p>Автоматичне блокування будь-яких спроб входу з неавторизованих IP-адрес.</p>
         </div>
     </div>
 </section>
 
 <section id="stats" class="section">
-    <h2 style="margin-bottom: 50px; font-size: 32px;">Live Statistics</h2>
+    <h2 style="margin-bottom: 60px; font-size: 36px; font-weight: 200;">Статистика SafeX</h2>
     <div class="grid">
         <div class="grid-item">
             <div class="big-num">1,542+</div>
             <p>Захищених користувачів</p>
         </div>
         <div class="grid-item">
-            <div class="big-num">12</div>
-            <p>Відстежених витоків</p>
+            <div class="big-num">48 ГБ</div>
+            <p>Оброблено даних витоку</p>
         </div>
         <div class="grid-item">
-            <div class="big-num">0</div>
-            <p>Втрачених акаунтів</p>
+            <div class="big-num">100%</div>
+            <p>Успішних активацій</p>
         </div>
     </div>
 </section>
 
 <footer id="contacts">
     <div class="footer-content">
-        <p>SafeXMail Group © 2026. Офіційний ресурс для захисту користувачів після витоку даних січень 2026. Ми не збираємо ваші персональні дані без активації протоколу захисту фахівцем.</p>
-        <div class="contacts">
-            <b>SUPPORT TG:</b> @safexmail_support<br>
-            <b>EMAIL:</b> safexmail.help@gmail.com<br>
-            <b>LOCATION:</b> UA Branch (Lviv/Kyiv Office)
+        <p>SafeXMail Group (UA Branch) © 2026. Офіційний термінал реагування на кіберзагрози. Сервіс надає допомогу жертвам масштабного зливу даних 2026 року. Ми не зберігаємо ваші паролі без вашої згоди на активацію захисту.</p>
+        <div class="contacts-list">
+            <b>SUPPORT TELEGRAM:</b> @safexmail_support<br>
+            <b>EMAIL ADM:</b> safexmail.help@gmail.com<br>
+            <b>ADRESS:</b> Lviv/Kyiv Regional Hub
         </div>
     </div>
 </footer>
 
 <script>
-    // Сканування
-    function runCheck() {
-        let val = document.getElementById('emailInp').value;
-        if(val.includes('@')) {
-            document.getElementById('alertBox').style.display = 'block';
+    // Показ/приховання форми
+    function toggleForm() {
+        let f = document.getElementById('contactForm');
+        f.style.display = (f.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // Валідація пошти
+    function validateEmail(el) {
+        let val = el.value;
+        if(val.includes('@gmail.com')) {
+            el.classList.remove('invalid');
         } else {
-            alert('Введіть вірну пошту');
+            el.classList.add('invalid');
         }
     }
 
-    // Ефект "Матриці"
+    // Відправка форми (фейкова)
+    function submitForm() {
+        let email = document.getElementById('fEmail');
+        if(!email.value.includes('@gmail.com')) {
+            alert('Помилка: Необхідна коректна адреса Gmail.com');
+            return;
+        }
+        alert('Дякуємо! Наш спеціаліст зв’яжеться з вами протягом 10 хвилин.');
+        toggleForm();
+    }
+
+    // Головний скан
+    function runCheck() {
+        let mail = document.getElementById('mainEmail').value;
+        if(mail.includes('@')) {
+            document.getElementById('alertBox').style.display = 'block';
+        } else {
+            alert('Введіть коректну пошту');
+        }
+    }
+
+    // Ефект "Матриці" (видніший)
     const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    const fontSize = 14;
+    const chars = "01010101ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const fontSize = 16;
     const columns = canvas.width / fontSize;
     const drops = [];
     for (let x = 0; x < columns; x++) drops[x] = 1;
@@ -142,20 +185,21 @@
     function draw() {
         ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = '#003300';
+        ctx.fillStyle = '#008F11'; // Яскравіший зелений
         ctx.font = fontSize + 'px monospace';
         for (let i = 0; i < drops.length; i++) {
-            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            const text = chars.charAt(Math.floor(Math.random() * chars.length));
             ctx.fillText(text, i * fontSize, drops[i] * fontSize);
             if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
             drops[i]++;
         }
     }
-    setInterval(draw, 33);
+    setInterval(draw, 40);
 </script>
 
 </body>
 </html>
+
 
             
     
