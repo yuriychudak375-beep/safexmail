@@ -1,227 +1,161 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SafeXMail | Advanced Cyber Defense</title>
+    <title>SafeXMail | Global Security Terminal</title>
     <style>
-        :root { --primary: #007bff; --accent: #00ff41; --bg: #000000; --card: #0a0a0a; --text: #ffffff; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background-color: #000000; color: #ffffff; font-family: 'Segoe UI', sans-serif; scroll-behavior: smooth; overflow-x: hidden; }
         
-        * { box-sizing: border-box; }
-        body { 
-            background-color: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', -apple-system, sans-serif; 
-            margin: 0; 
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.2; }
 
-        /* Анімований фон */
-        #bg-effect {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; opacity: 0.15;
-            background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,20,0,1) 100%);
-        }
+        nav { background: rgba(0, 0, 0, 0.9); position: fixed; width: 100%; top: 0; display: flex; justify-content: center; gap: 20px; padding: 20px 0; z-index: 1000; border-bottom: 1px solid #111; backdrop-filter: blur(5px); }
+        nav a { color: #555; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
+        nav a:hover { color: #007bff; text-shadow: 0 0 8px #007bff; }
 
-        /* Навігація */
-        nav { 
-            background: rgba(0, 0, 0, 0.9); 
-            position: fixed; width: 100%; top: 0; 
-            border-bottom: 1px solid #1a1a1a; 
-            display: flex; justify-content: center; gap: 30px;
-            padding: 20px 0; z-index: 1000; 
-            backdrop-filter: blur(10px);
-        }
-        nav a { color: #888; text-decoration: none; font-weight: 500; font-size: 13px; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; cursor: pointer; }
-        nav a:hover { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
-        .section { padding: 120px 0; min-height: 80vh; border-bottom: 1px solid #111; }
+        .section { min-height: 100vh; padding: 120px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; border-bottom: 1px solid #050505; }
         
-        .brand { font-size: 42px; font-weight: 900; letter-spacing: -1px; margin-bottom: 5px; }
-        .brand span { color: var(--primary); }
-        .hero-sub { color: #444; font-size: 14px; text-transform: uppercase; letter-spacing: 5px; margin-bottom: 60px; }
+        .brand { font-size: 48px; font-weight: 900; color: #ffffff; margin-bottom: 5px; letter-spacing: -2px; }
+        .brand span { color: #007bff; }
+        .hero-sub { color: #333; font-size: 12px; letter-spacing: 6px; text-transform: uppercase; margin-bottom: 40px; }
 
-        /* Сканер */
-        .scanner-card { 
-            background: var(--card); border: 1px solid #222; 
-            padding: 50px; border-radius: 4px; position: relative;
-            box-shadow: 0 0 50px rgba(0, 123, 255, 0.05);
-        }
-        input { 
-            width: 100%; max-width: 500px; padding: 18px; 
-            background: #050505; border: 1px solid #333; color: white; 
-            font-size: 16px; border-radius: 4px; margin-bottom: 20px;
-            outline: none; transition: 0.3s;
-        }
-        input:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(0, 123, 255, 0.2); }
+        .card { background: #050505; border: 1px solid #1a1a1a; padding: 40px; border-radius: 4px; max-width: 600px; width: 100%; box-shadow: 0 0 40px rgba(0,0,0,1); }
         
-        button { 
-            background: var(--primary); color: white; border: none; 
-            padding: 18px 50px; font-weight: 700; cursor: pointer; 
-            text-transform: uppercase; letter-spacing: 2px; border-radius: 4px;
-            transition: 0.3s;
-        }
-        button:hover { background: #0056b3; transform: scale(1.02); }
+        input { width: 100%; padding: 15px; background: #000; border: 1px solid #222; color: #fff; border-radius: 4px; margin-bottom: 20px; outline: none; font-size: 16px; }
+        input:focus { border-color: #007bff; }
 
-        .alert-box { 
-            display: none; margin-top: 30px; border: 1px solid #ff4444; 
-            background: rgba(255, 68, 68, 0.05); padding: 20px; color: #ff4444;
-            animation: blink 2s infinite;
-        }
-        @keyframes blink { 50% { opacity: 0.7; } }
+        button { width: 100%; background: #007bff; color: #fff; border: none; padding: 15px; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; border-radius: 4px; transition: 0.3s; }
+        button:hover { background: #0056b3; transform: translateY(-2px); }
 
-        /* Сітка послуг та статистики */
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 50px; }
-        .card { background: #050505; border: 1px solid #1a1a1a; padding: 40px; border-radius: 2px; transition: 0.3s; }
-        .card:hover { border-color: #333; background: #080808; }
-        .card h3 { font-size: 16px; color: var(--primary); text-transform: uppercase; }
-        .card p { color: #666; font-size: 14px; line-height: 1.8; }
-        .stat-val { font-size: 48px; font-weight: 900; margin-bottom: 10px; color: var(--text); }
+        .alert { display: none; margin-top: 30px; color: #ff4444; border: 1px solid #ff4444; padding: 20px; background: rgba(255,0,0,0.05); font-weight: bold; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% {opacity: 1;} 50% {opacity: 0.5;} 100% {opacity: 1;} }
 
-        /* Футер */
-        footer { padding: 80px 0 40px 0; background: #000; border-top: 1px solid #111; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; width: 100%; max-width: 1000px; margin-top: 40px; }
+        .grid-item { background: #050505; border: 1px solid #111; padding: 30px; border-radius: 4px; }
+        .grid-item h3 { color: #007bff; font-size: 14px; margin-bottom: 15px; text-transform: uppercase; }
+        .grid-item p { color: #666; font-size: 14px; line-height: 1.6; }
+        .big-num { font-size: 42px; font-weight: 900; margin-bottom: 10px; }
 
-.footer-text { color: #333; font-size: 11px; line-height: 2; margin-bottom: 30px; max-width: 600px; }
-        .contacts { font-size: 13px; color: #666; }
-        .contacts b { color: #aaa; }
+        footer { background: #000; padding: 60px 20px; border-top: 1px solid #111; width: 100%; }
+        .footer-content { max-width: 1000px; margin: 0 auto; text-align: left; color: #222; font-size: 11px; }
+        .contacts { margin-top: 30px; color: #666; font-size: 13px; line-height: 1.8; }
+        .contacts b { color: #888; }
     </style>
 </head>
 <body>
 
-<canvas id="bg-effect"></canvas>
+<canvas id="matrix"></canvas>
 
 <nav>
-    <a onclick="scrollToSection('home')">Home</a>
-    <a onclick="scrollToSection('services')">Services</a>
-    <a onclick="scrollToSection('stats')">Database</a>
-    <a onclick="scrollToSection('contacts')">Contact</a>
+    <a href="#home">Home</a>
+    <a href="#services">Services</a>
+    <a href="#stats">Database</a>
+    <a href="#contacts">Contact</a>
 </nav>
 
-<div class="container">
-    <section id="home" class="section">
-        <div class="brand">SafeX<span>Mail</span></div>
-        <div class="hero-sub">Global Cyber Defense Unit</div>
-        
-        <div class="scanner-card">
-            <h2 style="font-weight: 300;">Diagnostics Terminal</h2>
-            <p style="color: #666; margin-bottom: 40px;">Введіть адресу для перевірки статусу безпеки в базі витоків #XJ-2026</p>
-            <input type="email" id="targetEmail" placeholder="user@gmail.com">
-            <br>
-            <button onclick="startScan()">Run Diagnosis</button>
-            
-            <div id="alert" class="alert-box">
-                <b>[!] CRITICAL VULNERABILITY DETECTED</b><br>
-                Дані пошти знайдено в дампі витоку. Необхідна негайна активація SafeX-протоколу.
-            </div>
+<section id="home" class="section">
+    <div class="brand">SafeX<span>Mail</span></div>
+    <div class="hero-sub">Security Initiative</div>
+    <div class="card">
+        <h2 style="font-weight: 300; margin-bottom: 20px;">Scanner Terminal</h2>
+        <p style="color: #444; margin-bottom: 30px; font-size: 14px;">Перевірка статусу в базі витоків #XJ-2026 (48GB Data Dump)</p>
+        <input type="email" id="emailInp" placeholder="Введіть e-mail...">
+        <button onclick="runCheck()">Execute Scan</button>
+        <div id="alertBox" class="alert">
+            [CRITICAL ERROR] DATA BREACH DETECTED<br>
+            <span style="font-size: 12px; font-weight: normal; color: #888;">Вашу пошту знайдено у відкритих списках. Потрібна активація SafeX-протоколу.</span>
         </div>
-    </section>
+    </div>
+</section>
 
-    <section id="services" class="section">
-        <h2 style="font-size: 32px;">Core Capabilities</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>Tunnel Protection</h3>
-                <p>Ручне налаштування шифрованого тунелю для запобігання сесійним витокам під час входу.</p>
-            </div>
-            <div class="card">
-                <h3>Database Isolation</h3>
-                <p>Механічне видалення ваших даних зі знайдених хакерських дампів через прямі запити API.</p>
-            </div>
-            <div class="card">
-                <h3>Identity Recovery</h3>
-                <p>Допомога у відновленні контролю над обліковими записами з "критичним" статусом загрози.</p>
-            </div>
+<section id="services" class="section" style="background: #020202;">
+    <h2 style="margin-bottom: 50px; font-size: 32px;">Core Services</h2>
+    <div class="grid">
+        <div class="grid-item">
+            <h3>Tunneling</h3>
+            <p>Пряме шифрування сесії входу для захисту від перехоплення токенів.</p>
         </div>
-    </section>
+        <div class="grid-item">
+            <h3>Breach Cleanup</h3>
+            <p>Запити на видалення персональних даних із виявлених хакерських баз.</p>
+        </div>
+        <div class="grid-item">
+            <h3>Anti-Brute Force</h3>
+            <p>Блокування спроб автоматичного підбору паролів до вашого акаунту.</p>
+        </div>
+    </div>
+</section>
 
-    <section id="stats" class="section">
-        <h2 style="font-size: 32px;">Real-time Intelligence</h2>
-        <div class="grid">
-            <div class="card">
-                <div class="stat-val">1,542+</div>
-                <p>Захищених облікових записів за 2026 рік</p>
-            </div>
-            <div class="card">
-                <div class="stat-val">48GB</div>
-                <p>Об'єм відстеженого дампу #XJ-2026</p>
-            </div>
-            <div class="card">
-                <div class="stat-val">100%</div>
-                <p>Ефективність запобігання повторним витокам</p>
-            </div>
+<section id="stats" class="section">
+    <h2 style="margin-bottom: 50px; font-size: 32px;">Live Statistics</h2>
+    <div class="grid">
+        <div class="grid-item">
+            <div class="big-num">1,542+</div>
+            <p>Захищених користувачів</p>
         </div>
-    </section>
-</div>
+        <div class="grid-item">
+            <div class="big-num">12</div>
+            <p>Відстежених витоків</p>
+        </div>
+        <div class="grid-item">
+            <div class="big-num">0</div>
+            <p>Втрачених акаунтів</p>
+        </div>
+    </div>
+</section>
 
 <footer id="contacts">
-    <div class="container">
-        <div class="footer-text">
-            SafeXMail Group (Global division). Цей сайт є офіційним терміналом для перевірки вразливостей після масштабного витоку даних у січні 2026 року. Ми не зберігаємо ваші паролі. Усі процедури захисту виконуються згідно з міжнародним протоколом безпеки.
-        </div>
+    <div class="footer-content">
+        <p>SafeXMail Group © 2026. Офіційний ресурс для захисту користувачів після витоку даних січень 2026. Ми не збираємо ваші персональні дані без активації протоколу захисту фахівцем.</p>
         <div class="contacts">
-            <b>TG SUPPORT:</b> @safexmail_support<br>
-            <b>ADMIN EMAIL:</b> safexmail.help@gmail.com<br>
-            <b>OFFICE:</b> UA Branch (Kyiv/Lviv) / EU Central
+            <b>SUPPORT TG:</b> @safexmail_support<br>
+            <b>EMAIL:</b> safexmail.help@gmail.com<br>
+            <b>LOCATION:</b> UA Branch (Lviv/Kyiv Office)
         </div>
     </div>
 </footer>
 
 <script>
-    // Плавна прокрутка
-    function scrollToSection(id) {
-        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Сканнер
-    function startScan() {
-        let mail = document.getElementById('targetEmail').value;
-        if(mail.includes('@')) {
-            document.getElementById('alert').style.display = 'block';
-            setTimeout(() => {
-                document.getElementById('alert').scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
+    // Сканування
+    function runCheck() {
+        let val = document.getElementById('emailInp').value;
+        if(val.includes('@')) {
+            document.getElementById('alertBox').style.display = 'block';
         } else {
-            alert('Помилка: Введіть коректну адресу');
+            alert('Введіть вірну пошту');
         }
     }
 
-// Ефект фону (Canvas Matrix-like)
-    const canvas = document.getElementById('bg-effect');
+    // Ефект "Матриці"
+    const canvas = document.getElementById('matrix');
     const ctx = canvas.getContext('2d');
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let particles = [];
-    for(let i=0; i<50; i++) {
-        particles.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            speed: Math.random() * 2 + 1,
-            len: Math.random() * 100 + 50
-        });
-    }
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const fontSize = 14;
+    const columns = canvas.width / fontSize;
+    const drops = [];
+    for (let x = 0; x < columns; x++) drops[x] = 1;
 
     function draw() {
-        ctx.fillStyle = 'rgba(0,0,0,0.1)';
-        ctx.fillRect(0,0,canvas.width, canvas.height);
-        ctx.strokeStyle = '#003300';
-        ctx.lineWidth = 1;
-        particles.forEach(p => {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p.x, p.y + p.len);
-            ctx.stroke();
-            p.y += p.speed;
-            if(p.y > canvas.height) p.y = -p.len;
-        });
-        requestAnimationFrame(draw);
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = '#003300';
+        ctx.font = fontSize + 'px monospace';
+        for (let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) drops[i] = 0;
+            drops[i]++;
+        }
     }
-    draw();
+    setInterval(draw, 33);
 </script>
 
 </body>
-</html></div>
+</html>
+
             
     
